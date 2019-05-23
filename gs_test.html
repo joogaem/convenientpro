@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html"; charset="utf-8" />
+
+  <title>WEB1 - CSS</title>
+<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script type="text/javascript" src="lib/axios/dist/axios.standalone.js"></script>
+  <script type="text/javascript" src="lib/CryptoJS/rollups/hmac-sha256.js"></script>
+  <script type="text/javascript" src="lib/CryptoJS/rollups/sha256.js"></script>
+  <script type="text/javascript" src="lib/CryptoJS/components/hmac.js"></script>
+  <script type="text/javascript" src="lib/CryptoJS/components/enc-base64.js"></script>
+  <script type="text/javascript" src="lib/url-template/url-template.js"></script>
+  <script type="text/javascript" src="lib/apiGatewayCore/sigV4Client.js"></script>
+  <script type="text/javascript" src="lib/apiGatewayCore/apiGatewayClient.js"></script>
+  <script type="text/javascript" src="lib/apiGatewayCore/simpleHttpClient.js"></script>
+  <script type="text/javascript" src="lib/apiGatewayCore/utils.js"></script>
+  <script type="text/javascript" src="apigClient.js"></script>
+
+</head>
+<body>
+  <h1><a href="2.html">돌아가기<br></a></h1>
+  <form>
+    <ul class="form-style-1">
+      <li><label>item name <span class = "required">*</span></label><input type="text" name="item_name" class="field-divided" placeholder="item_name" /></li>
+      <li>
+        <input type="submit" value="Submit" />
+      </li>
+    </ul>
+  </form>
+
+</body>
+</html>
+<script type = "text/javascript">
+
+var dataResult;
+$(document).ready(function() {
+
+var apigClient = apigClientFactory.newClient();
+ $('form').submit(function(event) {
+
+   var formData = {
+     'item_name' : $('input[name=item_name]').val()
+   };
+var params = {
+    //This is where any header, path, or querystring request params go. The key is the parameter named as defined in the API
+     'item_name' : $('input[name=item_name]').val()
+};
+var body = {
+    //This is where you define the body of the request
+};
+var additionalParams = {
+    //If there are any unmodeled query parameters or headers that need to be sent with the request you can add them here
+    headers: {
+
+    },
+    queryParams: {
+     'item_name' : $('input[name=item_name]').val()
+    }
+};
+
+apigClient.gslist(params, body, additionalParams)
+    .then(function(result){
+      console.log(result.data);
+      dataResult = result.data;
+      var resultStr = 'Item name: <b>' + result.data.Item.item_name+'</b><br>'+'Item_price: <b>'+result.data.Item.Item_price+'</b><br>'
+      console.log(resultStr);
+      $('#results').html(resultStr);
+    }).catch( function(result){
+        console.log("error");
+    });
+return false;
+});
+});
+</script>

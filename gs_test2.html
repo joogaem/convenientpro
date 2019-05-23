@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html"; charset="utf-8" />
+
+  <title>WEB1 - CSS</title>
+  <script src='{% static "js/jquery-1.11.3.min.js" %}'></script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script type="text/javascript" src="lib/axios/dist/axios.standalone.js"></script>
+  <script type="text/javascript" src="lib/CryptoJS/rollups/hmac-sha256.js"></script>
+  <script type="text/javascript" src="lib/CryptoJS/rollups/sha256.js"></script>
+  <script type="text/javascript" src="lib/CryptoJS/components/hmac.js"></script>
+  <script type="text/javascript" src="lib/CryptoJS/components/enc-base64.js"></script>
+  <script type="text/javascript" src="lib/url-template/url-template.js"></script>
+  <script type="text/javascript" src="lib/apiGatewayCore/sigV4Client.js"></script>
+  <script type="text/javascript" src="lib/apiGatewayCore/apiGatewayClient.js"></script>
+  <script type="text/javascript" src="lib/apiGatewayCore/simpleHttpClient.js"></script>
+  <script type="text/javascript" src="lib/apiGatewayCore/utils.js"></script>
+  <script type="text/javascript" src="apigClient.js"></script>
+
+</head>
+<body>
+  <form>
+    <ul class="form-style-1">
+      <li><label>item id <span class = "required">*</span></label><input type="text" name="id" class="field-divided" placeholder="id" /></li>
+      <li>
+        <input type="submit" value="Submit" />
+      </li>
+    </ul>
+  </form>
+<div id = "results" class="form-style-1"></div>
+</body>
+</html>
+
+<script type = "text/javascript">
+
+var dataResult;
+$(document).ready(function() {
+
+var apigClient = apigClientFactory.newClient();
+ $('form').submit(function(event) {
+
+   var formData = {
+     'id' : $('input[name=id]').val()
+   };
+var params = {
+    //This is where any header, path, or querystring request params go. The key is the parameter named as defined in the API
+     'id' : $('input[name=id]').val()
+};
+var body = {
+    //This is where you define the body of the request
+};
+var additionalParams = {
+    //If there are any unmodeled query parameters or headers that need to be sent with the request you can add them here
+    headers: {
+
+    },
+    queryParams: {
+     'id' : $('input[name=id]').val()
+    }
+};
+
+apigClient.gslistsGet(params, body, additionalParams)
+    .then(function(result){
+      console.log(result.data);
+      dataResult = result.data;
+      var resultStr = 'Item id: <b>' + result.data.Item.id+'</b><br>'+'Item_name: <b>'+result.data.Item.Item_name+'</b><br>'++'Item_url: <b>'+result.data.Item.Item_url+'</b><br>';
+      console.log(resultStr);
+      $('#results').html(resultStr);
+    }).catch( function(result){
+        console.log("error");
+    });
+return false;
+});
+});
+</script>
